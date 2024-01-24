@@ -7,7 +7,6 @@ import { MdOutlineSwapHorizontalCircle } from "react-icons/md";
 import { PiWalletBold } from "react-icons/pi";
 import Link from "next/link";
 import useUserAgent from "@/hooks/useUserAgent";
-import { Session } from "@supabase/supabase-js";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
@@ -38,31 +37,30 @@ const navLinks = [
   },
 ];
 
-const Header = ({ session }: { session: any }) => {
+const Header = () => {
   const { isStandalone } = useUserAgent();
   const pathname = usePathname();
-
   return (
-    isStandalone && (
-      // !!user && (
-      <div className="fixed bottom-0 left-0 w-full bg-[#16171a] shadow-lg shadow-slate-50 z-10">
-        <ul className="flex justify-between py-4 px-4  ">
-          {navLinks.map((link) => (
-            <li className="text-white" key={link.name}>
-              <Link
-                href={link.path}
-                className={`flex flex-col text-xs items-center text-[#a7a7cb] ${
-                  pathname === link.path && "text-primary"
-                }`}
-              >
-                {link.icon} {link.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
+    // isStandalone && (
+    // !!user && (
+    <div className="fixed bottom-0 left-0 w-full bg-[#16171a] shadow-lg shadow-slate-50 z-10">
+      <ul className="flex justify-between py-4 px-4  ">
+        {navLinks.map((link) => (
+          <li className="text-white" key={link.name}>
+            <Link
+              href={link.path}
+              className={`flex flex-col text-xs items-center text-[#a7a7cb] ${
+                pathname === link.path && "text-primary"
+              }`}
+            >
+              {link.icon} {link.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
+  // );
   // );
 };
 

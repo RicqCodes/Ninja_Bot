@@ -21,7 +21,9 @@ client.defineJob({
     name: "ninja.event",
     // schema
   }),
-  // integrations: { slack },
+  integrations: {
+    supabase,
+  },
   run: async (payload, io) => {
     let result: any;
     const response = await io.runTask(
@@ -37,30 +39,30 @@ client.defineJob({
       { name: "Bot Task" }
     );
 
-    await io.runTask("update db", async () => {
-      // const user = (await supabase.auth.getUser()).data.user;
+    // await io.runTask("update db", async () => {
+    //   // const user = (await supabase.auth.getUser()).data.user;
 
-      const options: TokenOwnedOptions = {
-        contract_address: result.token,
-        token_name: result.name,
-        amount_received: result.amountReceived,
-        amount_bought: result.amountBought,
-        chain: result.chain,
-      };
+    //   const options: TokenOwnedOptions = {
+    //     contract_address: result.token,
+    //     token_name: result.name,
+    //     amount_received: result.amountReceived,
+    //     amount_bought: result.amountBought,
+    //     chain: result.chain,
+    //   };
 
-      const { data, error } = await supabase.runTask(
-        "update-tokens-owned",
-        async (db) => {
-          const user = await db.auth.getUser();
-          return db
-            .from("tokensOwned")
-            .insert(options)
-            .eq("user_id", user.data.user?.id);
-        }
-      );
+    //   const { data, error } = await io.supabase.runTask(
+    //     "update-tokens-owned",
+    //     async (db) => {
+    //       const user = await db.auth.getUser();
+    //       return db
+    //         .from("tokensOwned")
+    //         .insert(options)
+    //         .eq("user_id", user.data.user?.id);
+    //     }
+    //   );
 
-      console.log(error, data);
-    });
+    //   console.log(error, data);
+    // });
 
     // io.logger.log(result);
     return response;

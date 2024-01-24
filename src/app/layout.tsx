@@ -102,10 +102,7 @@ export default async function RootLayout({
         >
           <SesssionProvider>
             <UserProvider>
-              <WalletProvider>
-                {session && <Header session={session} />}
-                {children}
-              </WalletProvider>
+              <WalletProvider>{children}</WalletProvider>
             </UserProvider>
           </SesssionProvider>
         </TriggerProvider>

@@ -36,6 +36,8 @@ export async function getStoredKey() {
     return await getStoredKey();
   }
 
+  console.log(encryptionKey, "encryptionkey");
+
   // Convert the base64-encoded key back to ArrayBuffer
   const arrayBuffer = Uint8Array.from(atob(encryptionKey), (c) =>
     c.charCodeAt(0)

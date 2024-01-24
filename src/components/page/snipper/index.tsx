@@ -17,7 +17,12 @@ import { useEventRunDetails } from "@trigger.dev/react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { chains, defaultChains } from "@/lib/networks";
+import {
+  chains,
+  chains_id,
+  defaultChains,
+  supportedWallet,
+} from "@/lib/networks";
 import {
   Select,
   SelectContent,
@@ -62,6 +67,7 @@ const formSchema = z.object({
 
 const Snipper = ({ botConfig }: { botConfig: any }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [defaultTab, setDefaultTab] = useState("instance");
   const [balance, setBalance] = useState<string | null>(null);
   const [eventId, setEventId] = useState<string | undefined>(undefined);
   const { wallet, pk } = useWallet();
@@ -90,6 +96,8 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
         // chains_id[Number(watchBlockchain)]
         "goerli"
       );
+
+      console.log(balance, "current balance");
       setBalance(balance!);
     };
     getBalance();
@@ -104,13 +112,16 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
     const event = await startBot(values);
     setEventId(event.id);
   };
+  // console.log(runDetails);
+  // console.log(runDetails.data?.status, "status");
 
   useEffect(() => {
-    console.log(runDetails.data?.status, "status");
     runDetails.data?.status === "STARTED" && setIsLoading(false);
     runDetails.data?.status === "SUCCESS" && form.reset();
-  }, [runDetails.data?.status]);
-
+    runDetails.data?.status === "SUCCESS" && setDefaultTab("past-instances");
+    runDetails.data?.status === "SUCCESS" && setEventId(undefined);
+  }, [form, runDetails.data?.status]);
+  // console.log(runDetails);
   return (
     <div className="w-full flex flex-col gap-6">
       <header className="w-full flex gap-6 items-center justify-between fixed top-0 left-0 backdrop-blur-lg bg-accent_bg px-6 pt-2 h-20 z-10">
@@ -225,11 +236,17 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
                           <div className="w-full flex justify-between items-center">
                             <FormLabel>Amount</FormLabel>
                             <div className="flex gap-2 font-base text-sm opacity-75">
-                              Bal:{" "}
                               {balance === null ? (
                                 <Skeleton className="w-12 h-4 rounded-md bg-accent_555" />
                               ) : (
-                                balance
+                                `Bal: ${
+                                  balance === "undefined"
+                                    ? "0.000"
+                                    : Number(balance).toFixed(3)
+                                } ${
+                                  supportedWallet[Number(watchBlockchain)]
+                                    ?.symbol
+                                }`
                               )}
                             </div>
                           </div>
@@ -265,7 +282,7 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
             </form>
           </Form>
         </div>
-        <Tabs defaultValue="instance" className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 bg-accent_111">
             <TabsTrigger
               value="instance"
@@ -287,10 +304,10 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="instance">
-            {!isLoading ? (
+            {!isLoading && (
               <div className="w-full flex flex-col gap-2 mt-6">
                 <AnimatePresence>
-                  {runDetails.isLoading && (
+                  {eventId && (
                     <motion.div
                       initial={{ opacity: 0, y: -50 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -298,32 +315,35 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
                     >
                       <StatusIndicator
                         runDetails={runDetails}
-                        isLoading={runDetails.isLoading}
                         text="Starting Up"
-                        startingStatus="QUEUED"
-                        endingStatus="STARTED"
+                        index={0}
+                        startingStatus=""
+                        endingStatus="RUNNING"
                       />
                     </motion.div>
                   )}
                 </AnimatePresence>
                 <AnimatePresence>
-                  {runDetails.data?.status === "STARTED" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -50 }}
-                    >
-                      <StatusIndicator
-                        runDetails={runDetails}
-                        text="Sending Transaction"
-                        startingStatus="STARTED"
-                        endingStatus="FINISHED"
-                      />
-                    </motion.div>
-                  )}
+                  {runDetails.data?.tasks[0]?.status === "RUNNING" &&
+                    !!eventId && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -50 }}
+                      >
+                        <StatusIndicator
+                          runDetails={runDetails}
+                          text="Checking for liquidity and sending Transaction"
+                          index={0}
+                          startingStatus="RUNNING"
+                          endingStatus="COMPLETED"
+                        />
+                      </motion.div>
+                    )}
                 </AnimatePresence>
               </div>
-            ) : (
+            )}
+            {!eventId && (
               <div className="w-full font-raleway text-center mt-20">
                 😢 No Bot event running, start an event
               </div>

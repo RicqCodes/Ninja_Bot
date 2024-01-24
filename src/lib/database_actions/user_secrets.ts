@@ -1,5 +1,6 @@
 import { UserSecretOptions } from "@/types/database";
 import { supabase } from "@/lib/supabseClient";
+import { toast } from "react-toastify";
 
 export const getUserSecrets = async (
   id: string,
@@ -11,9 +12,7 @@ export const getUserSecrets = async (
     .eq("user_id", id)
     .single();
 
-  if (error) console.log("Error fetching user secrets:", error.message);
-
-  return data;
+  return { data, error };
 };
 
 export const updateUserSecrets = async (

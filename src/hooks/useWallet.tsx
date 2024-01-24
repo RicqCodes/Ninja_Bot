@@ -19,6 +19,7 @@ import {
   updateUserSecrets,
 } from "@/lib/database_actions/user_secrets";
 import { UserSecretOptions } from "@/types/database";
+import { toast } from "react-toastify";
 
 // Create a context for the wallet
 const WalletContext = createContext<{
@@ -51,15 +52,19 @@ export const WalletProvider: React.FC<{
       selectedColumns: ["pk"],
     };
     const secrets = await getUserSecrets(session?.user.id!, options);
-    const pk = secrets?.pk;
+    if (secrets.error) toast.error("Error fetching data, please refresh app");
+
+    const pk = secrets.data?.pk;
 
     // Check if encrypted wallet exists in local storage
     if (!!pk) {
       // Decrypt the wallet and set it
       const decryptedWallet = await decryptPrivateKey(JSON.parse(pk));
+      console.log(decryptedWallet, "decrypted wallet");
       setPk(decryptedWallet);
 
       const wallet = new Wallet(decryptedWallet);
+      console.log(wallet, "wallet");
       setWallet(wallet ? wallet.address : null);
       setAlreadyExist(true);
     } else {

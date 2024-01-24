@@ -93,7 +93,7 @@ export const supportedWallet: SupportedWallet = {
   },
   [chains.bsc.chain_id]: {
     blockchain_name: "Binance Smart Chain",
-    symbol: "BSC",
+    symbol: "BNB",
     logo: binance_logo,
     main_chain_logo: null,
     chain_id: chains.bsc.chain_id,
