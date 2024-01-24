@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ninja Bot
+
+
+
+## Overview
+
+Ninja Bot is a versatile trading bot designed to automate various transactions on the blockchain. Whether you're a seasoned trader or a beginner in the world of cryptocurrencies, Ninja Bot empowers you to execute trades, snipe opportunities, and manage your assets with ease. It works seamlessly across various EVM-compatible chains and provides essential wallet services.
+
+## Features
+
+- **Sniping Opportunities:** Snipe opportunities quickly and efficiently in fast-moving markets.
+- **Token Swapping:** Swap tokens seamlessly using Ninja Bot's integrated features.
+- **Wallet Services:** Manage your assets and execute transactions across different EVM chains.
+- **Cross-Chain Compatibility:** Ninja Bot is designed to work across various EVM-compatible chains.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js
+- Ethereum Wallet
+- Supabase Account (for user data storage)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+   git clone https://github.com/your-username/ninja-bot.git
+   ```
+2. Install dependencies:
+    
