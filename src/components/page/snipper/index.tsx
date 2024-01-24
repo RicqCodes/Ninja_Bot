@@ -97,7 +97,6 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
         "goerli"
       );
 
-      console.log(balance, "current balance");
       setBalance(balance!);
     };
     getBalance();
@@ -112,16 +111,16 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
     const event = await startBot(values);
     setEventId(event.id);
   };
-  // console.log(runDetails);
-  // console.log(runDetails.data?.status, "status");
 
   useEffect(() => {
     runDetails.data?.status === "STARTED" && setIsLoading(false);
     runDetails.data?.status === "SUCCESS" && form.reset();
     runDetails.data?.status === "SUCCESS" && setDefaultTab("past-instances");
+    runDetails.data?.status === "SUCCESS" &&
+      toast.success("successful bought token");
     runDetails.data?.status === "SUCCESS" && setEventId(undefined);
   }, [form, runDetails.data?.status]);
-  // console.log(runDetails);
+
   return (
     <div className="w-full flex flex-col gap-6">
       <header className="w-full flex gap-6 items-center justify-between fixed top-0 left-0 backdrop-blur-lg bg-accent_bg px-6 pt-2 h-20 z-10">
@@ -240,7 +239,7 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
                                 <Skeleton className="w-12 h-4 rounded-md bg-accent_555" />
                               ) : (
                                 `Bal: ${
-                                  balance === "undefined"
+                                  balance === undefined
                                     ? "0.000"
                                     : Number(balance).toFixed(3)
                                 } ${
@@ -324,8 +323,9 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
                   )}
                 </AnimatePresence>
                 <AnimatePresence>
-                  {runDetails.data?.tasks[0]?.status === "RUNNING" &&
-                    !!eventId && (
+                  {
+                    // runDetails.data?.tasks[0]?.status === "RUNNING" &&
+                    !isLoading && eventId && (
                       <motion.div
                         initial={{ opacity: 0, y: -50 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -339,11 +339,12 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
                           endingStatus="COMPLETED"
                         />
                       </motion.div>
-                    )}
+                    )
+                  }
                 </AnimatePresence>
               </div>
             )}
-            {!eventId && (
+            {!isLoading && !eventId && (
               <div className="w-full font-raleway text-center mt-20">
                 😢 No Bot event running, start an event
               </div>

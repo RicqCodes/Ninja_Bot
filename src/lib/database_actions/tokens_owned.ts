@@ -32,7 +32,7 @@ export const insertUserTokensOwned = async (
   user: { id: string },
   options: TokenOwnedOptions
 ) => {
-  const { error } = await supabase.from("employees").insert(options);
+  const { error } = await supabase.from("tokens_owned").insert(options);
 
   if (error) console.log("Error creating employee:", error.message);
   else console.log("Employee created successfully");

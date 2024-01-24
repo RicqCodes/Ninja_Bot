@@ -27,8 +27,7 @@ export default function AuthForm() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider,
       options: {
-        redirectTo: "http://192.168.0.235:3000/wallet",
-        // redirectTo: redirectUrl,
+        redirectTo: redirectUrl,
       },
     });
 

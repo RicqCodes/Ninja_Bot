@@ -1,4 +1,7 @@
 import { encryptionKey } from "./config";
+import crypto from "crypto";
+
+generateKey;
 
 // Generate a random encryption key
 async function generateKey() {
@@ -35,8 +38,6 @@ export async function getStoredKey() {
     await storeKey();
     return await getStoredKey();
   }
-
-  console.log(encryptionKey, "encryptionkey");
 
   // Convert the base64-encoded key back to ArrayBuffer
   const arrayBuffer = Uint8Array.from(atob(encryptionKey), (c) =>

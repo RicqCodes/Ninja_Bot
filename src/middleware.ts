@@ -30,11 +30,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // if user is signed in and they are in '/', redirect them to '/dashboard'
-  if (
-    (user && req.nextUrl.pathname === "/") ||
-    (req.nextUrl.pathname === "/onboard" && user && data?.is_onboarded)
-  ) {
-    console.log("did you run");
+  if (user && req.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 

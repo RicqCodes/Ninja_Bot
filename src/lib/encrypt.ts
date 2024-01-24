@@ -1,9 +1,10 @@
+import crypto from "crypto";
 // Encrypt data with a given key
 export async function encryptData(key: CryptoKey, data: string) {
   const encoder = new TextEncoder();
   const encodedData = encoder.encode(data);
 
-  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const iv = window.crypto.getRandomValues(new Uint8Array(12));
 
   const encryptedData = await crypto.subtle.encrypt(
     {

@@ -26,7 +26,7 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
         : !runDetails.data) && (
         <RiLoader2Line className="animate-spin text-3xl" />
       )}
-      {runDetails.data?.tasks[index].status === endingStatus && (
+      {runDetails.data?.tasks[index]?.status === endingStatus && (
         <PiCheckCircleFill className="text-3xl bg-success" />
         // <div className="w-8 h-8 ml-1 rounded-full bg-success flex items-center justify-center">
         //   <GiCheckMark className="text-black font-bold" />

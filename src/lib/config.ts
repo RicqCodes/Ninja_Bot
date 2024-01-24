@@ -5,15 +5,15 @@ const encryptionKey = process.env.NEXT_PUBLIC_ENCRYPTION_KEY;
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
-const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_TO!;
+const redirectUrl = isDevelopment
+  ? process.env.NEXT_PUBLIC_DEV_REDIRECT_TO!
+  : process.env.NEXT_PUBLIC_PROD_REDIRECT_TO;
 const ethereum_rpc = process.env.NEXT_PUBLIC_ALCHEMY_RPC_ETHEREUM;
 const goerli_rpc = process.env.NEXT_PUBLIC_ALCHEMY_RPC_GOERLI;
 const optimism_rpc = process.env.NEXT_PUBLIC_ALCHEMY_RPC_OPTIMISM;
 const arbitrum_rpc = process.env.NEXT_PUBLIC_ALCHEMY_RPC_ARBITRUM;
 const base_rpc = process.env.NEXT_PUBLIC_ALCHEMY_RPC_BASE;
 const bsc_rpc = process.env.NEXT_PUBLIC_BSC_RPC;
-
-// const ethFactory =
 
 export {
   NEXT_PUBLIC_SUPABASE_URL,
