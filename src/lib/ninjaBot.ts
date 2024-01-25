@@ -614,10 +614,3 @@ export class NinjaBot {
     }
   }
 }
-
-// new NinjaBot(
-//   "0x3fd0a6a635fe018c127b56d1569788d38b20d1a6228937bc8d43a970a42be78f",
-//   "0x0A5e5dcc43047cD8f8079200589e861936E020ec",
-//   "GOERLI"
-// ).snipe(0.001, 5);
-// ("0xB41553d9044a9F3E02870C27e2F007C3Bd9F8E5D");
