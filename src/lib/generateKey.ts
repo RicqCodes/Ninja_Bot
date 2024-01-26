@@ -1,10 +1,14 @@
 import { encryptionKey } from "./config";
-import crypto from "crypto";
 
-generateKey;
+// Check if window is defined (we are on client side)
+const crypto = typeof window !== "undefined" ? window.crypto : null;
 
 // Generate a random encryption key
 async function generateKey() {
+  if (!crypto || !crypto.subtle) {
+    throw new Error("Web Crypto API is not available");
+  }
+
   return await crypto.subtle.generateKey(
     {
       name: "AES-GCM",
@@ -19,6 +23,10 @@ async function generateKey() {
 async function storeKey() {
   const key = await generateKey();
 
+  if (!crypto || !crypto.subtle) {
+    throw new Error("Web Crypto API is not available");
+  }
+
   // Convert the key to an exportable format (e.g., ArrayBuffer)
   const exportedKey = await crypto.subtle.exportKey("raw", key);
 
@@ -26,9 +34,6 @@ async function storeKey() {
   const base64Key = btoa(
     String.fromCharCode.apply(null, Array.from(new Uint8Array(exportedKey)))
   );
-
-  // Store the base64Key in a secure location (e.g., local storage, secure storage)
-  localStorage.setItem("encryptionKey", base64Key);
 }
 
 // Retrieve the stored key
@@ -37,6 +42,10 @@ export async function getStoredKey() {
     // Key not found, generate a new one and store it
     await storeKey();
     return await getStoredKey();
+  }
+
+  if (!crypto || !crypto.subtle) {
+    throw new Error("Web Crypto API is not available");
   }
 
   // Convert the base64-encoded key back to ArrayBuffer

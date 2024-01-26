@@ -1,6 +1,4 @@
 "use client";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
 import { FcGoogle } from "react-icons/fc";
@@ -16,7 +14,6 @@ import { Provider } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 
 export default function AuthForm() {
-  const router = useRouter();
   const supabase = createClientComponentClient<Database>({
     supabaseUrl: NEXT_PUBLIC_SUPABASE_URL,
     supabaseKey: NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -27,7 +24,11 @@ export default function AuthForm() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider,
       options: {
-        redirectTo: redirectUrl,
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
+        // redirectTo: redirectUrl,
       },
     });
 
