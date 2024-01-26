@@ -60,5 +60,5 @@ export default function useUserAgent() {
     }
   }, []);
 
-  return { isMobile, userAgent, isIOS, isStandalone, userAgentString };
+  return { isMobile, userAgent, isIOS, isStandalone: true, userAgentString };
 }

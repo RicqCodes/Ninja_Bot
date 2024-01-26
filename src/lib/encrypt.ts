@@ -1,8 +1,14 @@
-import crypto from "crypto";
+// Check if window is defined (we are on client side)
+const crypto = typeof window !== "undefined" ? window.crypto : null;
+
 // Encrypt data with a given key
 export async function encryptData(key: CryptoKey, data: string) {
   const encoder = new TextEncoder();
   const encodedData = encoder.encode(data);
+
+  if (!crypto || !crypto.subtle) {
+    throw new Error("Web Crypto API is not available");
+  }
 
   const iv = window.crypto.getRandomValues(new Uint8Array(12));
 
@@ -31,6 +37,10 @@ export async function decryptData(
 ) {
   const data = new Uint8Array(Object.values(encryptedData.data));
   const iv = new Uint8Array(Object.values(encryptedData.iv));
+
+  if (!crypto || !crypto.subtle) {
+    throw new Error("Web Crypto API is not available");
+  }
 
   const decryptedData = await crypto.subtle.decrypt(
     {
