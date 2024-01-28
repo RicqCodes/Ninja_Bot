@@ -76,7 +76,7 @@ const Withdrawal: React.FC = () => {
             {defaultChains.map((chain) => (
               <div
                 key={chain.chain_id}
-                className={`w-[60px] h-[60px] rounded-full flex items-center justify-center bg-accent_444 ${
+                className={`w-[2.4rem] h-[2.4rem] rounded-full flex items-center justify-center bg-accent_fff ${
                   selectedChain === chain.chain_id
                     ? "border-2 border-primary"
                     : ""
@@ -88,7 +88,7 @@ const Withdrawal: React.FC = () => {
                   alt={`supported blockchain logo - ${chain.blockchain_name}`}
                   height={40}
                   width={0}
-                  className="w-[40px] h-[40px]"
+                  className="w-[1.8rem] h-[1.8rem]"
                 />
               </div>
             ))}
@@ -113,7 +113,7 @@ const Withdrawal: React.FC = () => {
                       <FormControl>
                         <SelectTrigger
                           onClick={(e) => e.stopPropagation}
-                          className="w-full p-8 bg-accent_111"
+                          className="w-full p-6"
                         >
                           <SelectValue
                             onClick={(e) => e.stopPropagation}
@@ -140,9 +140,10 @@ const Withdrawal: React.FC = () => {
                     <FormLabel>Amount</FormLabel>
                     <FormControl>
                       <Input
+                        autoComplete="off"
                         type="number"
                         {...field}
-                        className="p-8 bg-accent_111"
+                        className="w-full p-6 placeholder:text-sm placeholder:font-sans text-xs"
                       />
                     </FormControl>
                     <FormMessage />
@@ -158,10 +159,11 @@ const Withdrawal: React.FC = () => {
                       <FormLabel>Address</FormLabel>
                       <FormControl>
                         <Input
+                          autoComplete="off"
                           type="text"
                           placeholder="Example: 0x"
                           {...field}
-                          className="p-8 bg-accent_111"
+                          className="w-full p-6 placeholder:text-sm placeholder:font-sans text-xs"
                         />
                       </FormControl>
                       <FormMessage />
@@ -171,7 +173,7 @@ const Withdrawal: React.FC = () => {
               </div>
               <Button
                 variant="accent"
-                className="w-full p-8 text-base"
+                className="w-full p-6 text-base"
                 type="button"
               >
                 Send

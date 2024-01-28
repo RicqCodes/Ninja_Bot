@@ -17,6 +17,7 @@ import Deposit from "@/components/deposit";
 import useToggle from "@/hooks/useToggle";
 import { AnimatePresence } from "framer-motion";
 import Withdrawal from "@/components/Withdrawal";
+import { ethers } from "ethers";
 
 const Wallet = () => {
   const { wallet } = useWallet();
@@ -38,10 +39,7 @@ const Wallet = () => {
   };
   const withdrawalHandleOffModal = () => {
     withdrawalHandleToggle();
-    console.log("i ran");
   };
-
-  console.log(withdrawalToggle, "withdraw toggle");
 
   useEffect(() => {
     const getBalances = async () => {
@@ -49,7 +47,11 @@ const Wallet = () => {
       setTokenBalances(balances);
       defaultChains.forEach((tokens) => {
         tokens.price = balances?.prices[tokens.chain_id];
-        tokens.balance = balances?.balance[tokens.chain_id].toString();
+        tokens.balance = Number(
+          ethers.formatEther(
+            balances?.balance[tokens.chain_id]?.toString() || "0"
+          )
+        ).toFixed(3);
       });
     };
     wallet && getBalances();
@@ -68,8 +70,8 @@ const Wallet = () => {
             <div className="flex flex-col gap-3">
               <div className="w-full items-center flex justify-between font-mono text-accent_fff">
                 <div className="flex gap-4 items-center font-light">
-                  <p className="text-lg">Total Balance</p>
-                  <PiEyeSlashDuotone className="text-2xl" />
+                  <p className="text-sm">Total Balance</p>
+                  <PiEyeSlashDuotone className="text-xl" />
                 </div>
                 <div className="flex gap-2 items-center">
                   <p className="text-lg">USD</p>
@@ -77,7 +79,7 @@ const Wallet = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between text-secondary font-mono text-accent_fff">
-                <p className="text-4xl font-extrabold tracking-tighter">
+                <p className="text-3xl font-extrabold tracking-tighter">
                   $9,637.00
                 </p>
                 <p className="font-extralight tracking-tighter">+$175 (4.6%)</p>
@@ -110,28 +112,28 @@ const Wallet = () => {
               </Button>
             </div>
           </div>
-          <div className="w-full flex flex-col gap-12 mt-80">
-            <h2 className="text-xl font-semibold text-accent_fff">My Assets</h2>
+          <div className="w-full flex flex-col gap-8 mt-80">
+            <h2 className="text-lg font-semibold text-accent_fff">My Assets</h2>
             <div className="w-full flex flex-col gap-8">
               {defaultChains.map((chain, i) => (
                 <div
                   key={chain.blockchain_name + i}
-                  className="w-full flex items-center justify-center bg-accent_111 py-6 px-6 rounded-3xl"
+                  className="w-full flex items-center justify-center bg-accent_111 py-4 px-4 rounded-3xl"
                 >
                   <div className="w-full flex gap-2">
-                    <div className="w-[3.2rem] h-[3.2rem] bg-accent_fff rounded-full p-2 relative">
+                    <div className="w-[2.4rem] h-[2.4rem] bg-accent_fff rounded-full flex items-center justify-center relative">
                       {!chain.layer_2 ? (
                         <Image
                           src={chain.logo}
                           alt="chain logo"
-                          className="w-[2.4rem] h-[2.4rem]"
+                          className="w-[1.8rem] h-[1.8rem]"
                         />
                       ) : (
                         chain.main_chain_logo && (
                           <Image
                             src={chain.main_chain_logo}
                             alt="chain logo"
-                            className="w-[2.4rem] h-[2.4rem]"
+                            className="w-[1.8rem] h-[1.8rem]"
                           />
                         )
                       )}
@@ -139,15 +141,15 @@ const Wallet = () => {
                         <Image
                           src={chain.logo}
                           alt="blockchain logo"
-                          className="w-[1rem] h-[1rem] absolute right-0 bottom-1"
+                          className="w-[0.7rem] h-[0.7rem] absolute right-0 bottom-1"
                         />
                       )}
                     </div>
                     <div>
-                      <p className="text-xl text-accent_fff font-semibold">
+                      <p className="text-base text-accent_fff font-semibold">
                         {chain.symbol}
                       </p>
-                      <div className="text-accent_fff font-light text-sm opacity-75">
+                      <div className="text-accent_fff font-light text-xs opacity-75">
                         {tokenBalances === null ? (
                           <Skeleton className="h-4 w-[80px] bg-accent_555" />
                         ) : (
@@ -157,25 +159,25 @@ const Wallet = () => {
                     </div>
                   </div>
                   <div>
-                    <div className="flex flex-row gap-1 items-center">
-                      <span className="text-xl text-accent_fff font-semibold opacity-75">
-                        $
-                      </span>
-                      <div className="text-xl text-accent_fff font-semibold">
-                        {tokenBalances === null ? (
-                          <Skeleton className="h-4 w-[60px] bg-accent_555" />
-                        ) : (
-                          `${(
+                    <div className="flex flex-row items-center">
+                      {tokenBalances === null ? (
+                        <Skeleton className="h-4 w-[60px] bg-accent_555 mb-2" />
+                      ) : (
+                        <div className="text-base text-accent_fff font-semibold">
+                          <span className="text-base text-accent_fff font-semibold opacity-75">
+                            $
+                          </span>
+                          {(
                             Number(chain.balance) * Number(chain.price)
-                          ).toFixed(3)}`
-                        )}
-                      </div>
+                          ).toFixed(3)}
+                        </div>
+                      )}
                     </div>
-                    <div className="text-accent_fff font-light text-sm">
+                    <div className="text-accent_fff font-light text-xs">
                       {tokenBalances === null ? (
                         <Skeleton className="h-4 w-[60px] bg-accent_555" />
                       ) : (
-                        `$${Number(chain.price).toFixed(0)}`
+                        `$${Number(chain.price).toFixed(3)}`
                       )}
                     </div>
                   </div>

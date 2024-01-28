@@ -60,11 +60,9 @@ export const WalletProvider: React.FC<{
     if (!!pk) {
       // Decrypt the wallet and set it
       const decryptedWallet = await decryptPrivateKey(JSON.parse(pk));
-      console.log(decryptedWallet, "decrypted wallet");
       setPk(decryptedWallet);
 
       const wallet = new Wallet(decryptedWallet);
-      console.log(wallet, "wallet");
       setWallet(wallet ? wallet.address : null);
       setAlreadyExist(true);
     } else {

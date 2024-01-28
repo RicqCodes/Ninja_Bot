@@ -81,8 +81,9 @@ export function ProfileForm({ settingsData }: { settingsData: any }) {
               <FormControl>
                 <Input
                   className="w-full"
+                  {...field}
+                  value={field.value}
                   placeholder="e.g: Ricqcodes"
-                  defaultValue={field.value}
                 />
               </FormControl>
               <FormDescription>
@@ -103,8 +104,8 @@ export function ProfileForm({ settingsData }: { settingsData: any }) {
                   className="w-full"
                   placeholder="example@email.com"
                   {...field}
+                  value={field.value}
                   disabled={!!field.value}
-                  defaultValue={field.value}
                 />
               </FormControl>
               <FormDescription>This is your email address.</FormDescription>
@@ -156,7 +157,7 @@ export function ProfileForm({ settingsData }: { settingsData: any }) {
                     type="text"
                     placeholder="Example: 300000"
                     {...field}
-                    defaultValue={field.value}
+                    value={field.value}
                   />
                 </FormControl>
                 <FormMessage />
@@ -183,30 +184,6 @@ export function ProfileForm({ settingsData }: { settingsData: any }) {
                   <SelectContent className="w-full text-accent_fff bg-accent_bg">
                     <SelectItem value="ethereum">Ethereum</SelectItem>
                     <SelectItem value="bsc">Binance Smart Chain</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="swapVersion"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Swap Version</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="e.g: v2" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="text-accent_fff bg-accent_bg">
-                    <SelectItem value="2">v2</SelectItem>
-                    <SelectItem value="3">v3</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

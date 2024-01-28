@@ -1,6 +1,8 @@
+import { Chain } from "@/lib/interfaces/chainTypes";
+
 // Common interface for options with an id
 interface BaseOptions {
-  id?: string | number;
+  id?: number;
   user_id?: string;
   created_at?: string;
 }
@@ -30,11 +32,12 @@ export interface SettingOptions extends BaseOptions {
 
 // Token owned options interface
 export interface TokenOwnedOptions extends BaseOptions {
-  token_name?: string;
-  contract_address?: string;
-  amount_bought?: string;
-  amount_received?: string;
-  chain?: number;
+  selectedColumns?: string[];
+  token_name: string;
+  contract_address: string;
+  amount_bought: string; // Make amount_bought explicitly allow undefined
+  amount_received: string;
+  chain: number;
 }
 
 // Transaction options interface

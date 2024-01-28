@@ -59,7 +59,7 @@ export class fetcher {
         [chains.base.chain_id]: baseEthBalance,
       },
       prices: {
-        [chains.ethereum.chain_id]: ethPrice?.price,
+        [chains.goerli.chain_id]: ethPrice?.price,
         [chains.ethereum.chain_id]: ethPrice?.price,
         [chains.bsc.chain_id]: bnbPrice?.price,
         [chains.optimism.chain_id]: ethPrice?.price,

@@ -2,7 +2,7 @@ import React from "react";
 
 import { PiCheckCircleFill } from "react-icons/pi";
 import { RiLoader2Line } from "react-icons/ri";
-import { GiCheckMark } from "react-icons/gi";
+import { MdError } from "react-icons/md";
 import { UseRunDetailsResult } from "@trigger.dev/react";
 
 interface StatusIndicatorProps {
@@ -26,11 +26,12 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
         : !runDetails.data) && (
         <RiLoader2Line className="animate-spin text-3xl" />
       )}
-      {runDetails.data?.tasks[index]?.status === endingStatus && (
-        <PiCheckCircleFill className="text-3xl bg-success" />
-        // <div className="w-8 h-8 ml-1 rounded-full bg-success flex items-center justify-center">
-        //   <GiCheckMark className="text-black font-bold" />
-        // </div>
+      {(runDetails.data?.tasks[index]?.status === endingStatus ||
+        runDetails.data?.tasks[index]?.status === "COMPLETED") && (
+        <PiCheckCircleFill className="text-3xl text-success" />
+      )}
+      {runDetails.data?.tasks[index]?.status === "ERRORED" && (
+        <MdError className="text-3xl text-error" />
       )}
       <p className="font-sans">{text}</p>
     </div>

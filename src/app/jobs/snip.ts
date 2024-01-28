@@ -3,13 +3,19 @@ import { client } from "@/trigger";
 import { createClient } from "@supabase/supabase-js";
 import { NinjaBot } from "@/lib/ninjaBot";
 import { TokenOwnedOptions } from "@/types/database";
-import { Supabase } from "@trigger.dev/supabase";
+import { Supabase, SupabaseManagement } from "@trigger.dev/supabase";
 import { Database } from "@/types/supabase";
+import { Chain } from "@/lib/interfaces/chainTypes";
 
 const supabase = new Supabase<Database>({
   id: "supabase",
   supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+});
+
+// Use OAuth to authenticate with Supabase Management API
+const supabaseManagement = new SupabaseManagement({
+  id: "supabase-management",
 });
 
 client.defineJob({
@@ -25,7 +31,18 @@ client.defineJob({
     supabase,
   },
   run: async (payload, io) => {
-    let result: any;
+    let result:
+      | {
+          token: string;
+          amountBought: string;
+          amountReceived: string;
+          decimal: any;
+          name: any;
+          chain: Chain;
+          version: string;
+        }
+      | undefined;
+    let user_id = payload.id;
     const response = await io.runTask(
       "bot-task",
       async () => {
@@ -39,32 +56,24 @@ client.defineJob({
       { name: "Bot Task" }
     );
 
-    // await io.runTask("update db", async () => {
-    //   // const user = (await supabase.auth.getUser()).data.user;
+    await io.supabase.runTask("update db", async (db) => {
+      if (result !== undefined) {
+        const options: TokenOwnedOptions = {
+          user_id: user_id,
+          contract_address: result.token,
+          token_name: result.name,
+          amount_received: result.amountReceived,
+          amount_bought: result.amountBought!,
+          chain: +result.chain,
+        };
+        const { data, error } = await db.from("tokens_owned").insert(options);
+        console.log(data, "data after inserting");
 
-    //   const options: TokenOwnedOptions = {
-    //     contract_address: result.token,
-    //     token_name: result.name,
-    //     amount_received: result.amountReceived,
-    //     amount_bought: result.amountBought,
-    //     chain: result.chain,
-    //   };
-
-    //   const { data, error } = await io.supabase.runTask(
-    //     "update-tokens-owned",
-    //     async (db) => {
-    //       const user = await db.auth.getUser();
-    //       return db
-    //         .from("tokensOwned")
-    //         .insert(options)
-    //         .eq("user_id", user.data.user?.id);
-    //     }
-    //   );
-
-    //   console.log(error, data);
-    // });
-
-    // io.logger.log(result);
-    return response;
+        if (error) throw error;
+        return data;
+      } else {
+        throw Error("Error buying token, try again");
+      }
+    });
   },
 });
