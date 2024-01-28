@@ -80,7 +80,7 @@ const Swap = () => {
           </div>
         </div>
       </div>
-      <Button variant="outline" className="py-8 text-xl rounded-[2rem]">
+      <Button variant="outline" className="w-full p-6 text-base">
         Swap
       </Button>
     </div>

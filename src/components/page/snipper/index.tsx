@@ -114,11 +114,12 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
 
   useEffect(() => {
     runDetails.data?.status === "STARTED" && setIsLoading(false);
-    runDetails.data?.status === "SUCCESS" && form.reset();
-    runDetails.data?.status === "SUCCESS" && setDefaultTab("past-instances");
-    runDetails.data?.status === "SUCCESS" &&
+    if (runDetails.data?.status === "SUCCESS") {
+      form.reset();
+      setDefaultTab("past-instances");
       toast.success("successful bought token");
-    runDetails.data?.status === "SUCCESS" && setEventId(undefined);
+      setEventId(undefined);
+    }
   }, [form, runDetails.data?.status]);
 
   return (
@@ -323,24 +324,37 @@ const Snipper = ({ botConfig }: { botConfig: any }) => {
                   )}
                 </AnimatePresence>
                 <AnimatePresence>
-                  {
-                    // runDetails.data?.tasks[0]?.status === "RUNNING" &&
-                    !isLoading && eventId && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -50 }}
-                      >
-                        <StatusIndicator
-                          runDetails={runDetails}
-                          text="Checking for liquidity and sending Transaction"
-                          index={0}
-                          startingStatus="RUNNING"
-                          endingStatus="COMPLETED"
-                        />
-                      </motion.div>
-                    )
-                  }
+                  {!isLoading && eventId && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -50 }}
+                    >
+                      <StatusIndicator
+                        runDetails={runDetails}
+                        text="Checking for liquidity and sending Transaction"
+                        index={0}
+                        startingStatus="RUNNING"
+                        endingStatus="COMPLETED"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <AnimatePresence>
+                  {runDetails.data?.tasks[1]?.id && eventId && (
+                    <motion.div
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -50 }}
+                    >
+                      <StatusIndicator
+                        runDetails={runDetails}
+                        text="Updating DB"
+                        index={1}
+                        startingStatus="RUNNING"
+                        endingStatus="COMPLETED"
+                      />
+                    </motion.div>
+                  )}
                 </AnimatePresence>
               </div>
             )}

@@ -14,7 +14,7 @@ interface SupportedWallet {
     layer_2: boolean;
     layer_type: string | null;
     price?: string;
-    balance?: string;
+    balance?: string | number;
   };
 }
 

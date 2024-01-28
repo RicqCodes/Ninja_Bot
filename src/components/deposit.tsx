@@ -46,7 +46,7 @@ const Deposit: React.FC<Props> = ({ handleOffModal }) => {
             />
           </div>
           <div className="flex gap-6 items-center">
-            <p className="font-mono">{shortAddress(wallet)}</p>
+            <p className="font-mono text-sm">{shortAddress(wallet)}</p>
             <LuCopy onClick={() => copyToClipboard(wallet!)} />
           </div>
         </div>
@@ -54,17 +54,17 @@ const Deposit: React.FC<Props> = ({ handleOffModal }) => {
           <div>
             <LuAlertTriangle />
           </div>
-          <p className="text-black font-raleway">
+          <p className="text-black text-base font-raleway">
             Please make sure you are sending assets on our{" "}
             <Link href="">supported networks</Link>
           </p>
         </div>
-        <div className="w-full pt-6">
+        <div className="w-full pt-4">
           <Button
             variant="accent"
             type="button"
             onClick={() => handleOffModal()}
-            className="w-full p-8 text-lg"
+            className="w-full p-6 text-base"
           >
             Close
           </Button>

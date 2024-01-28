@@ -20,6 +20,12 @@ import {
 } from "./abis";
 import { Chain, ethChains } from "./interfaces/chainTypes";
 
+/**
+ * Creates a new instance of NinjaBot.
+ * @param PRIVATEKEY The private key of the wallet used for signing transactions.
+ * @param tokenAddress The address of the token to be traded.
+ * @param chain The chain on which the trading operations will be performed.
+ */
 export class NinjaBot {
   private factoryObjV2 = {
     GOERLI: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
@@ -325,6 +331,7 @@ export class NinjaBot {
           amountReceived: formatUnits(parsedLog[3].toString(), decimal),
           decimal,
           name,
+          chain: this.chain,
           version: "V2",
         };
 
@@ -369,9 +376,9 @@ export class NinjaBot {
           ),
           decimal,
           name,
+          chain: this.chain,
           version: "V3",
         };
-        console.log(parsedData);
         return parsedData;
       }
     } catch (err) {
